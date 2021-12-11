@@ -1,7 +1,24 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void didChangeDependencies() {
+    Future.delayed(Duration(seconds: 0), () {
+      Timer(Duration(seconds: 3), () {
+        Navigator.of(context).pushNamed('/evidence');
+      });
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,23 +26,22 @@ class SplashScreen extends StatelessWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
+          
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
               height: 40,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                      'https://cdn.vox-cdn.com/thumbor/Pkmq1nm3skO0-j693JTMd7RL0Zk=/0x0:2012x1341/1200x800/filters:focal(0x0:2012x1341)/cdn.vox-cdn.com/uploads/chorus_image/image/47070706/google2.0.0.jpg'),
+                  image: AssetImage('assets/img/lens_logo.png'),
                 ),
               ),
             ),
             Container(
-              height: 40,
+              height: 60,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png'),
+                  image: AssetImage('assets/img/main_logo.png'),
                 ),
               ),
             ),
