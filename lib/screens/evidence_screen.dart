@@ -1,6 +1,42 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class EvidenceScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+// ignore: must_be_immutable
+class EvidenceScreen extends StatefulWidget {
+  @override
+  State<EvidenceScreen> createState() => _EvidenceScreenState();
+}
+
+class _EvidenceScreenState extends State<EvidenceScreen> {
+  var _evidenceImage;
+  bool _isLoading = false;
+
+  Future getGalleryImage() async {
+    setState(() {
+      _evidenceImage = null;
+    });
+    final image =
+        // ignore: invalid_use_of_visible_for_testing_member
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _evidenceImage = image as PickedFile;
+    });
+  }
+
+  Future getCameraImage() async {
+    setState(() {
+      _evidenceImage = null;
+    });
+    final image =
+        // ignore: invalid_use_of_visible_for_testing_member
+        await ImagePicker.platform.getImage(source: ImageSource.camera);
+    setState(() {
+      _evidenceImage = image as XFile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +78,21 @@ class EvidenceScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
+                        image: _evidenceImage != null
+                            ? DecorationImage(
+                                fit: BoxFit.cover,
+                                image: FileImage(
+                                  File(_evidenceImage.path),
+                                ),
+                              )
+                            : null,
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.black12,
                       ),
                       height: 300,
-                      child: Center(child: Text('Add an Image')),
+                      child: _evidenceImage != null
+                          ? null
+                          : Center(child: Text('Add an Image')),
                     ),
                     SizedBox(
                       height: 10,
@@ -60,7 +106,9 @@ class EvidenceScreen extends StatelessWidget {
                               EdgeInsets.all(15),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            getCameraImage();
+                          },
                           child: Text('Take from Camera'),
                         ),
                         SizedBox(
@@ -72,12 +120,13 @@ class EvidenceScreen extends StatelessWidget {
                               EdgeInsets.all(15),
                             ),
                           ),
-                          onPressed: () {},
-                          child: Text('Take from Camera'),
+                          onPressed: () {
+                            getGalleryImage();
+                          },
+                          child: Text('Import From Gallery'),
                         ),
                       ],
                     ),
-                    
                   ],
                 ),
               ),

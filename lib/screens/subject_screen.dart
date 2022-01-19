@@ -1,6 +1,41 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
-class SubjectScreen extends StatelessWidget {
+class SubjectScreen extends StatefulWidget {
+  @override
+  State<SubjectScreen> createState() => _SubjectScreenState();
+}
+
+class _SubjectScreenState extends State<SubjectScreen> {
+  var _subjectImage;
+
+  bool _isLoading = false;
+
+  Future getGalleryImage() async {
+    setState(() {
+      _subjectImage = null;
+    });
+    final image =
+        // ignore: invalid_use_of_visible_for_testing_member
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _subjectImage = image as PickedFile;
+    });
+  }
+
+  Future getCameraImage() async {
+    setState(() {
+      _subjectImage = null;
+    });
+    final image =
+        // ignore: invalid_use_of_visible_for_testing_member
+        await ImagePicker.platform.getImage(source: ImageSource.camera);
+    setState(() {
+      _subjectImage = image as XFile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +77,25 @@ class SubjectScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
+                        image: _subjectImage != null
+                            ? DecorationImage(
+                                fit: BoxFit.cover,
+                                image: FileImage(
+                                  File(_subjectImage.path),
+                                ),
+                              )
+                            : null,
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.black12,
                       ),
                       height: 300,
-                      child: Center(child: Text('Add an Image')),
+                      child: Center(
+                        child: _subjectImage != null
+                            ? null
+                            : Center(
+                                child: Text('Add an Image'),
+                              ),
+                      ),
                     ),
                     SizedBox(
                       height: 10,
@@ -60,7 +109,9 @@ class SubjectScreen extends StatelessWidget {
                               EdgeInsets.all(15),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            getCameraImage();
+                          },
                           child: Text('Take from Camera'),
                         ),
                         SizedBox(
@@ -72,8 +123,10 @@ class SubjectScreen extends StatelessWidget {
                               EdgeInsets.all(15),
                             ),
                           ),
-                          onPressed: () {},
-                          child: Text('Upload '),
+                          onPressed: () {
+                            getGalleryImage();
+                          },
+                          child: Text('Upload from Gallery'),
                         ),
                       ],
                     ),
@@ -86,8 +139,10 @@ class SubjectScreen extends StatelessWidget {
                     EdgeInsets.all(15),
                   ),
                 ),
-                onPressed: () {},
-                child: Text('Add the Subject'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Go Back'),
               ),
             ],
           ),
