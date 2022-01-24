@@ -14,18 +14,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: TextTheme(
-          headline1: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        )
-      ),
+          primarySwatch: Colors.blue,
+          textTheme: TextTheme(
+            headline1: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          )),
       home: SplashScreen(),
       routes: {
-        '/evidence':(context)=>EvidenceScreen(),
+        '/evidence': (context) => EvidenceScreen(),
         '/subject': (context) => SubjectScreen(),
       },
     );
