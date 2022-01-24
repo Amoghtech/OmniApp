@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:omni/screens/evidence_screen.dart';
+import 'package:omni/screens/output_screen.dart';
 import 'package:omni/screens/subject_screen.dart';
 import './screens/splash_screen.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/evidence':(context)=>EvidenceScreen(),
         '/subject': (context) => SubjectScreen(),
+        '/output': (context) => ImageOutput(),
       },
     );
   }
